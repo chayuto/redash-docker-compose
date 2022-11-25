@@ -10,43 +10,43 @@ services:
   server:
     <<: *redash-service
     command: server
-    network_mode: host
-    # ports:
-    #   - "5049:5000"
+    #network_mode: host
+    ports:
+      - "5049:5000"
     environment:
       REDASH_WEB_WORKERS: 4
   scheduler:
     <<: *redash-service
     command: scheduler
-    network_mode: host
+    # network_mode: host
     environment:
       QUEUES: "celery"
       WORKERS_COUNT: 1
   scheduled_worker:
     <<: *redash-service
     command: worker
-    network_mode: host
+    # network_mode: host
     environment:
       QUEUES: "scheduled_queries,schemas"
       WORKERS_COUNT: 1
   adhoc_worker:
     <<: *redash-service
     command: worker
-    network_mode: host
+    # network_mode: host
     environment:
       QUEUES: "queries"
       WORKERS_COUNT: 2
   redis:
     image: redis:5.0-alpine
     restart: always
-    network_mode: host
+    # network_mode: host
   postgres:
     image: postgres:9.6-alpine
     env_file: .env
     volumes:
       - ./pg_data:/var/lib/postgresql/data
     restart: always
-    network_mode: host
+    # network_mode: host
   # nginx:
   #   image: redash/nginx:latest
   #   network_mode: host
